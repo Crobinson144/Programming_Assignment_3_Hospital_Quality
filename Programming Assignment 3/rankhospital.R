@@ -1,6 +1,6 @@
 # rankhospital.R
 # Programming Assignment 3 - R Programming
-# Author: (Your Name)
+# Author: Chinua Eric Robinson
 # Function: rankhospital(state, outcome, num = "best")
 # Returns the hospital name in a state with the given ranking for 30-day mortality.
 # Valid outcomes: "heart attack", "heart failure", "pneumonia"
@@ -33,9 +33,11 @@ rankhospital <- function(state, outcome, num = "best") {
   
   # Prepare subset for the state
   col_idx <- outcome_map[[outcome]]
-  suppressWarnings(outcome_df[, col_idx] <- as.numeric(outcome_df[, col_idx]))
+  suppressWarnings(outcome_df[[col_idx]] <- as.numeric(outcome_df[[col_idx]]))
+  # Select by column name: c("Hospital.Name", col_idx) would coerce the index to "11"
+  rate_colname <- names(outcome_df)[col_idx]
   
-  df <- outcome_df[outcome_df$State == state, c("Hospital.Name", col_idx)]
+  df <- outcome_df[outcome_df$State == state, c("Hospital.Name", rate_colname)]
   names(df) <- c("Hospital.Name", "Rate")
   df <- df[!is.na(df$Rate), ]
   

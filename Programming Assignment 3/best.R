@@ -1,6 +1,6 @@
 # best.R
 # Programming Assignment 3 - R Programming
-# Author: (Your Name)
+# Author: Chinua Eric Robinson
 # Function: best(state, outcome)
 # Returns the hospital name with the lowest 30-day mortality for the specified outcome in the given state.
 # Valid outcomes: "heart attack", "heart failure", "pneumonia"
@@ -33,9 +33,11 @@ best <- function(state, outcome) {
   # Extract relevant subset: rows for state, with non-missing outcome values
   col_idx <- outcome_map[[outcome]]
   # Coerce the selected outcome column to numeric, suppressing warnings about NAs
-  suppressWarnings(outcome_df[, col_idx] <- as.numeric(outcome_df[, col_idx]))
+  suppressWarnings(outcome_df[[col_idx]] <- as.numeric(outcome_df[[col_idx]]))
+  # Select by column name: c("Hospital.Name", col_idx) would coerce the index to "11"
+  rate_colname <- names(outcome_df)[col_idx]
   
-  state_rows <- outcome_df[outcome_df$State == state, c("Hospital.Name", col_idx)]
+  state_rows <- outcome_df[outcome_df$State == state, c("Hospital.Name", rate_colname)]
   names(state_rows) <- c("Hospital.Name", "Rate")
   
   # Drop rows with NA Rate

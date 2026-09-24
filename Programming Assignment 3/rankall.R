@@ -1,6 +1,6 @@
 # rankall.R
 # Programming Assignment 3 - R Programming
-# Author: (Your Name)
+# Author: Chinua Eric Robinson
 # Function: rankall(outcome, num = "best")
 # Returns a data.frame with columns 'hospital' and 'state', giving for each state
 # the hospital with the requested ranking for the specified outcome.
@@ -26,10 +26,12 @@ rankall <- function(outcome, num = "best") {
   
   # Coerce target column to numeric
   col_idx <- outcome_map[[outcome]]
-  suppressWarnings(outcome_df[, col_idx] <- as.numeric(outcome_df[, col_idx]))
+  suppressWarnings(outcome_df[[col_idx]] <- as.numeric(outcome_df[[col_idx]]))
+  # Select by column name: c("Hospital.Name", col_idx) would coerce the index to "11"
+  rate_colname <- names(outcome_df)[col_idx]
   
   # Keep only needed columns to reduce memory
-  df <- outcome_df[, c("Hospital.Name", "State", col_idx)]
+  df <- outcome_df[, c("Hospital.Name", "State", rate_colname)]
   names(df) <- c("Hospital.Name", "State", "Rate")
   
   # Drop NAs in Rate
